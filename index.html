@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+    <script src="lib/CGCanvas.js"></script>
+    <script>
+        CGC.init('example');
+        CGC.animate({
+            draw: function (progress) {
+                console.log(progress)
+            },
+            duration: 3000
+        });
+    </script>
+</head>
+<body>
+<h1>canvas</h1>
+<canvas height='400' width='500' id='example'>Обновите браузер</canvas>
+</body>
+</html>
