@@ -5,17 +5,88 @@
     <title>Canvas</title>
     <script src="lib/CGCanvas.js"></script>
     <script>
-        CGC.init('example');
-        CGC.animate({
-            draw: function (progress) {
-                console.log(progress)
-            },
-            duration: 3000
+        CGC.init('example', function () {
+            let r = new CGRect(CGC);
+            r.draw(10, 10, 200, 200, 'red');
+
+            let b = new CGRect(CGC);
+            b.draw(300, 10, 50, 50, 'blue');
+
+            let g = new CGCircle(CGC);
+            g.draw(250, 250, 100, {color: 'green'});
+
+            let y = new CGCircle(CGC);
+            y.draw(400, 300, 20, {color: 'yellow'});
+
+            const changeBtn = document.getElementById('changeRed');
+            changeBtn.onclick = function (e) {
+                r.clear();
+                r.draw(40, 40);
+            };
+            const moveRedBtn = document.getElementById('moveRed');
+            moveRedBtn.onclick = function (e) {
+                r.move(200, 0, 1500, () => {
+                    r.move(250, 400);
+                    r.changeSize(150, 150);
+                });
+                b.move(200, 350, 2000);
+                b.changeSize(100, 100, 2000);
+                g.move(350, 350, 2000);
+                g.changeSize(50, 500, () => {
+                    g.changeSize(100, 1500);
+                });
+                setYBig(y);
+            };
+            const stopY = document.getElementById('stopY');
+            stopY.onclick = function (e) {
+                y.runCallback = false;
+                y.stopAnimate = true;
+            };
+            const clearBtn = document.getElementById('clearAll');
+            clearBtn.onclick = function (e) {
+                CGC.stopAll();
+                CGC.clearAll(true);
+            };
+            const drawBtn = document.getElementById('drawAll');
+            drawBtn.onclick = function (e) {
+                CGC.drawAll();
+            }
         });
+
+        function setYBig(y) {
+            y.changeSize(50, 2000, () => {
+                setYSmall(y)
+            });
+        }
+
+        function setYSmall(y) {
+            y.changeSize(20, 1000, () => {
+                setYBig(y)
+            });
+        }
+
+        function test(event) {
+            console.log(CGC.getMousePos(event));
+        }
     </script>
 </head>
 <body>
 <h1>canvas</h1>
-<canvas height='400' width='500' id='example'>Обновите браузер</canvas>
+<div>
+    <canvas height='600' width='700' id='example' style="border: 1px solid black; margin: 0 auto; display: block">
+        Обновите браузер
+    </canvas>
+</div>
+<div>
+    <a href="#" id="changeRed">Перенести Красный</a>
+    <br>
+    <a href="#" id="moveRed">Анимировать Красный</a>
+    <br>
+    <a href="#" id="stopY">Остановить желтый</a>
+    <br>
+    <a href="#" id="drawAll">Перерисовать все</a>
+    <br>
+    <a href="#" id="clearAll">Очистить</a>
+</div>
 </body>
 </html>
